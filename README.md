@@ -1,8 +1,8 @@
 # autodocs.jl 
 
-Provides the `@autodocs` macro, which, if invoked at the end of a Julia file, will generate basic documentation for all declared Julia objects (functions, structs, macros, etc.) up until that point. If an object already has documentation, it will be expanded (but not overwritten).
+Provides the `@autodocs` macro, which, if invoked at the start of a module declaration, will generate basic documentation for all declared Julia objects (functions, structs, macros, etc.) in that module. If an object already has documentation, it will be expanded (but not overwritten). 
 
-This allows lazy developers to raise their documentation level to the bare minimum, while more motivated developers can skip writing all the boilerplate  and stick to the actual description of functions. 
+This allows lazy developers to raise their documentation level to the bare minimum, while more motivated developers can skip writing all the boilerplate and stick to the actual description of objects and their functionality
 
 # Features
 + output can be used with `Documenter.jl`
@@ -14,7 +14,7 @@ This allows lazy developers to raise their documentation level to the bare minim
 ```julia
 # undocumented_file.jl
 
-module UndocumentedModule 
+@autodocs module UndocumentedModule 
 
   struct UndocumentedStruct
     _private_field::Any
@@ -34,9 +34,9 @@ module UndocumentedModule
   #no export
   
   const global_variable = # ...
+  export global_variable
 end
 
-autodocs.@autodoc "documented_file.jl"
 ```
 Generates:
 
@@ -76,6 +76,9 @@ module UndocumentedModule
 
   """
   `undocumented_function(x <: Number) -> Any`
+  
+  ## Arguments
+  + `x <: Number` 
   """
   function undocumented_function(x::T) where {T <: Number}
     # ...
@@ -87,6 +90,10 @@ module UndocumentedModule
   
   ## Brief
   do foo
+  
+  ## Arguments
+  + `x :: Any`
+  + `kwarg_01 = 1234`` [optional]
   """
   function partially_documented_function(x; kwarg_01 = 1234)
     # ...
