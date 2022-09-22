@@ -32,6 +32,8 @@ module UndocumentedModule
     # ...
   end
   #no export
+  
+  const global_variable = # ...
 end
 
 autodocs.@autodoc "documented_file.jl"
@@ -51,6 +53,9 @@ Generates:
 
 ## Functions
 + `undocumented_function`
+
+## Variables
++ `global_variable::Any`
 """
 module UndocumentedModule
 
@@ -86,5 +91,9 @@ module UndocumentedModule
   function partially_documented_function(x; kwarg_01 = 1234)
     # ...
   end
+  
+  """
+  `global_variable::Any` (const)
+  """
 end
 ```
